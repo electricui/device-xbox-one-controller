@@ -84,13 +84,11 @@ export class XboxOneControllerGeneralDecoderCodec extends Codec {
     push: PushCallback,
   ) => {
     const oldState = this.state[key]
-
+    this.state[key] = val
     if (oldState !== val) {
       const message = new Message(key, val)
       return push(message)
     }
-
-    this.state[key] = val
 
     return null
   }
