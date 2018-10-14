@@ -102,8 +102,8 @@ export class XboxOneControllerGeneralDecoderCodec extends Codec {
       // these events always come in on their own, so we can just bail early
       // if it's pressed it's 0x02 0x01
       // if it's not     it's 0x02 0x00
-      const message = new Message('xbox', data[1] === 0x01)
-      return push(message)
+      const xbox = new Message('xbox', data[1] === 0x01)
+      return push(xbox)
     }
 
     if (data[0] !== 0x01) {
