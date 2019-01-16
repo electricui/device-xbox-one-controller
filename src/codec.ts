@@ -70,7 +70,12 @@ export class XboxOneControllerGeneralDecoderCodec extends Codec {
   }
 
   filter(message: Message): boolean {
-    // this codec processes all incoming events
+    // if it's a xbox button press, we handle the special event
+    if (message.payload[0] === 0x02) {
+      return true
+    }
+
+    // this codec processes all incoming event packets as well
     return message.messageID === 'event' && message.payload[0] === 0x01
   }
 
