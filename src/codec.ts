@@ -104,7 +104,6 @@ export class XboxOneControllerGeneralDecoderCodec extends Codec {
   }
 
   decode(message: Message, push: PushCallback) {
-    console.log(message)
     const data = message.payload
 
     // if this is an xbox button press
