@@ -2,20 +2,20 @@ import { HID } from 'node-hid'
 
 import { DiscoveryHintConsumer, Hint } from '@electricui/core'
 
-import xboxOneControllerTransportFactory from './transport-factory'
+import { XboxOneControllerTransportFactory } from './transport-factory'
+import { isWiredXBoxController, isWirelessXBoxController } from './utils'
 
 export default function XboxOneControllerHintConsumerFactory(HID: any) {
   const consumer = new DiscoveryHintConsumer({
-    factory: xboxOneControllerTransportFactory,
+    factory: XboxOneControllerTransportFactory,
     canConsume: (hint: Hint) => {
       if (hint.getTransportKey() === 'hid') {
         const identification = hint.getIdentification()
 
-        // check if it matches the right vendor and product IDs or it has the name there
+        // return both
         return (
-          (identification.vendorId === 1118 &&
-            identification.productId === 765) ||
-          identification.product === 'Xbox Wireless Controller'
+          isWirelessXBoxController(identification) ||
+          isWiredXBoxController(identification)
         )
       }
       return false
@@ -24,9 +24,18 @@ export default function XboxOneControllerHintConsumerFactory(HID: any) {
       const identification = hint.getIdentification()
       const configuration = hint.getConfiguration()
 
+      let controllerCodec = 'unknown'
+
+      if (isWirelessXBoxController(identification)) {
+        controllerCodec = 'wireless'
+      } else if (isWiredXBoxController(identification)) {
+        controllerCodec = 'wired'
+      }
+
       return {
         HID: HID,
         path: identification.path,
+        controllerCodec,
       }
     },
   })

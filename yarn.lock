@@ -253,10 +253,12 @@ balanced-match@^1.0.0:
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.0.tgz#89b4d199ab2bee49de164ea02b89ce462d71b767"
   integrity sha1-ibTRmasr7kneFk6gK4nORi1xt2c=
 
-bindings@^1.3.0:
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/bindings/-/bindings-1.3.0.tgz#b346f6ecf6a95f5a815c5839fc7cdb22502f1ed7"
-  integrity sha512-DpLh5EzMR2kzvX1KIlVC0VkC3iZtHKTgdtZ0a3pglBZdaQFjt5S9g9xd1lE+YvXyfd6mtCeRnrUfOLYiTMlNSw==
+bindings@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/bindings/-/bindings-1.4.0.tgz#909efa49f2ebe07ecd3cb136778f665052040127"
+  integrity sha512-7znEVX22Djn+nYjxCWKDne0RRloa9XfYa84yk3s+HkE3LpDYZmhArYr9O9huBoHY3/oXispx5LorIX7Sl2CgSQ==
+  dependencies:
+    file-uri-to-path "1.0.0"
 
 bl@^1.0.0:
   version "1.2.1"
@@ -562,10 +564,10 @@ expand-range@^1.8.1:
   dependencies:
     fill-range "^2.1.0"
 
-expand-template@^1.0.2:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/expand-template/-/expand-template-1.1.0.tgz#e09efba977bf98f9ee0ed25abd0c692e02aec3fc"
-  integrity sha512-kkjwkMqj0h4w/sb32ERCDxCQkREMCAgS39DscDnSwDsbxnwwM1BTZySdC3Bn1lhY7vL08n9GoO/fVTynjDgRyQ==
+expand-template@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/expand-template/-/expand-template-2.0.3.tgz#6e14b3fcee0f3a6340ecb57d2e8918692052a47c"
+  integrity sha512-XYfuKMvj4O35f/pOXLObndIRvyQ+/+6AhODh+OKWj9S9498pHHn/IMszH+gt0fBCRWMNfk1ZSp5x3AifmnI2vg==
 
 extglob@^0.3.1:
   version "0.3.2"
@@ -573,6 +575,11 @@ extglob@^0.3.1:
   integrity sha1-Lhj/PS9JqydlzskCPwEdqo2DSaE=
   dependencies:
     is-extglob "^1.0.0"
+
+file-uri-to-path@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/file-uri-to-path/-/file-uri-to-path-1.0.0.tgz#553a7b8446ff6f684359c445f1e37a05dacc33dd"
+  integrity sha512-0Zt+s3L7Vf1biwWZ29aARiVYLx7iMGnEUl9x33fbB/j3jR81u/O2LbqK+Bm1CDSNDKVtJ/YjwY7TUd5SkeLQLw==
 
 filename-regex@^2.0.0:
   version "2.0.1"
@@ -1182,10 +1189,15 @@ ms@2.0.0:
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
   integrity sha1-VgiurfwAvmwpAd9fmGF4jeDVl8g=
 
-nan@^2.10.0:
-  version "2.11.1"
-  resolved "https://registry.yarnpkg.com/nan/-/nan-2.11.1.tgz#90e22bccb8ca57ea4cd37cc83d3819b52eea6766"
-  integrity sha512-iji6k87OSXa0CcrLl9z+ZiYSuR2o+c0bGuNmXdrhTQTakxytAFsC56SArGYoiHlJlFoHSnvmhpceZJaXkVuOtA==
+nan@^2.12.1:
+  version "2.12.1"
+  resolved "https://registry.yarnpkg.com/nan/-/nan-2.12.1.tgz#7b1aa193e9aa86057e3c7bbd0ac448e770925552"
+  integrity sha512-JY7V6lRkStKcKTvHO5NVSQRv+RV+FIL5pvDoLiAtSL9pKlC5x9PKQcZDsq7m4FO4d57mkhC6Z+QhAh3Jdk5JFw==
+
+napi-build-utils@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/napi-build-utils/-/napi-build-utils-1.0.1.tgz#1381a0f92c39d66bf19852e7873432fc2123e508"
+  integrity sha512-boQj1WFgQH3v4clhu3mTNfP+vOBxorDlE8EKiMjUlLG3C4qAESnn9AxIOkFgTR2c9LtzNjPrjS60cT27ZKBhaA==
 
 nise@^1.4.5:
   version "1.4.5"
@@ -1198,21 +1210,21 @@ nise@^1.4.5:
     path-to-regexp "^1.7.0"
     text-encoding "^0.6.4"
 
-node-abi@^2.2.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/node-abi/-/node-abi-2.2.0.tgz#e802ac7a2408e2c0593fb3176ffdf8a99a9b4dec"
-  integrity sha512-FqVC0WNNL8fQWQK3GYTESfwZXZKDbSIiEEIvufq7HV6Lj0IDDZRVa4CU/KTA0JVlqY9eTDSuPiC8FS9UfGVuzA==
+node-abi@^2.7.0:
+  version "2.7.1"
+  resolved "https://registry.yarnpkg.com/node-abi/-/node-abi-2.7.1.tgz#a8997ae91176a5fbaa455b194976e32683cda643"
+  integrity sha512-OV8Bq1OrPh6z+Y4dqwo05HqrRL9YNF7QVMRfq1/pguwKLG+q9UB/Lk0x5qXjO23JjJg+/jqCHSTaG1P3tfKfuw==
   dependencies:
     semver "^5.4.1"
 
-node-hid@^0.7.3:
-  version "0.7.3"
-  resolved "https://registry.yarnpkg.com/node-hid/-/node-hid-0.7.3.tgz#736e9a4dee5eec96c20fbe301e0311bb185cb2f4"
-  integrity sha512-LOCqWqcOlng+Kn1Qj/54zrPVfCagg1O7RlSgMmugykBcoYvUud6BswTrJM2aXuBac+bCCm3lA2srRG8YfmyXZQ==
+node-hid@^0.7.7:
+  version "0.7.7"
+  resolved "https://registry.yarnpkg.com/node-hid/-/node-hid-0.7.7.tgz#3341630231b534226b86d6758caba48a646799ed"
+  integrity sha512-s6x8dU9/9+yKyeNw5xvU9FvQ1QGazVrDIG08/bixxCVQw98jfeFyz51C0T9/0KzKAYMOXMtElYvPIKmtY7eizw==
   dependencies:
-    bindings "^1.3.0"
-    nan "^2.10.0"
-    prebuild-install "^4.0.0"
+    bindings "^1.4.0"
+    nan "^2.12.1"
+    prebuild-install "^5.2.4"
 
 noop-logger@^0.1.1:
   version "0.1.1"
@@ -1453,22 +1465,23 @@ pkg-dir@^3.0.0:
   dependencies:
     find-up "^3.0.0"
 
-prebuild-install@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/prebuild-install/-/prebuild-install-4.0.0.tgz#206ce8106ce5efa4b6cf062fc8a0a7d93c17f3a8"
-  integrity sha512-7tayxeYboJX0RbVzdnKyGl2vhQRWr6qfClEXDhOkXjuaOKCw2q8aiuFhONRYVsG/czia7KhpykIlI2S2VaPunA==
+prebuild-install@^5.2.4:
+  version "5.2.4"
+  resolved "https://registry.yarnpkg.com/prebuild-install/-/prebuild-install-5.2.4.tgz#8cc41a217ef778a31d3a876fe6668d05406db750"
+  integrity sha512-CG3JnpTZXdmr92GW4zbcba4jkDha6uHraJ7hW4Fn8j0mExxwOKK20hqho8ZuBDCKYCHYIkFM1P2jhtG+KpP4fg==
   dependencies:
     detect-libc "^1.0.3"
-    expand-template "^1.0.2"
+    expand-template "^2.0.3"
     github-from-package "0.0.0"
     minimist "^1.2.0"
     mkdirp "^0.5.1"
-    node-abi "^2.2.0"
+    napi-build-utils "^1.0.1"
+    node-abi "^2.7.0"
     noop-logger "^0.1.1"
     npmlog "^4.0.1"
     os-homedir "^1.0.1"
     pump "^2.0.1"
-    rc "^1.1.6"
+    rc "^1.2.7"
     simple-get "^2.7.0"
     tar-fs "^1.13.0"
     tunnel-agent "^0.6.0"
@@ -1513,7 +1526,7 @@ randomatic@^1.1.3:
     is-number "^3.0.0"
     kind-of "^4.0.0"
 
-rc@^1.1.6:
+rc@^1.2.7:
   version "1.2.8"
   resolved "https://registry.yarnpkg.com/rc/-/rc-1.2.8.tgz#cd924bf5200a075b83c188cd6b9e211b7fc0d3ed"
   integrity sha512-y3bGgqKj3QBdxLbLkomlohkvsA8gdAiUQlSBJnBhfn+BPxg4bc62d8TcBW15wavDfgexCgccckhcZvywyQYPOw==

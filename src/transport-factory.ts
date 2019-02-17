@@ -8,32 +8,51 @@ import {
 } from '@electricui/core'
 import { HIDTransport } from '@electricui/transport-node-hid'
 
-import { XboxOneControllerGeneralDecoderCodec, XboxOneControllerVibrationCodec } from './codec'
+import { XboxOneWiredControllerDecoderCodec } from './codec-wired'
+import {
+  XboxOneWirelessControllerDecoderCodec,
+  XboxOneWirelessControllerVibrationCodec,
+} from './codec-wireless'
 
-const xboxOneControllerTransportFactory = new TransportFactory(options => {
-  const connectionInterface = new ConnectionInterface()
+export const XboxOneControllerTransportFactory = new TransportFactory(
+  options => {
+    const connectionInterface = new ConnectionInterface()
+    const controllerCodec = options.controllerCodec
 
-  const transport = new HIDTransport(options)
+    const transport = new HIDTransport(options)
 
-  const deliverabilityManager = new DeliverabilityManagerDumb(
-    connectionInterface,
-  )
-  const queryManager = new QueryManagerNone(connectionInterface)
+    const deliverabilityManager = new DeliverabilityManagerDumb(
+      connectionInterface,
+    )
+    const queryManager = new QueryManagerNone(connectionInterface)
 
-  const codecPipeline = new CodecDuplexPipeline()
+    const codecPipeline = new CodecDuplexPipeline()
 
-  const codec = new XboxOneControllerGeneralDecoderCodec()
-  const vibrate = new XboxOneControllerVibrationCodec()
-  codecPipeline.addCodecs([codec, vibrate])
+    let codec
 
-  connectionInterface.setTransport(transport)
-  connectionInterface.setQueryManager(queryManager)
-  connectionInterface.setDeliverabilityManager(deliverabilityManager)
-  connectionInterface.setPipelines([codecPipeline])
+    switch (controllerCodec) {
+      case 'wired':
+        codec = new XboxOneWiredControllerDecoderCodec()
+        break
 
-  connectionInterface.finalise()
+      case 'wireless':
+        codec = new XboxOneWirelessControllerDecoderCodec()
+        break
 
-  return connectionInterface
-})
+      default:
+        throw new Error('Unknown XBox controller codec type.')
+    }
 
-export default xboxOneControllerTransportFactory
+    const vibrate = new XboxOneWirelessControllerVibrationCodec()
+    codecPipeline.addCodecs([codec, vibrate])
+
+    connectionInterface.setTransport(transport)
+    connectionInterface.setQueryManager(queryManager)
+    connectionInterface.setDeliverabilityManager(deliverabilityManager)
+    connectionInterface.setPipelines([codecPipeline])
+
+    connectionInterface.finalise()
+
+    return connectionInterface
+  },
+)

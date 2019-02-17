@@ -1,58 +1,15 @@
 import { Codec, Message, PushCallback } from '@electricui/core'
 
-function bitMask(byte: number, bitmask: number) {
-  return !!(byte & bitmask)
-}
+import { bitMask, MAX_UINT16, XBoxControllerState } from './codec-common'
 
-const MAX_UINT16 = 2 ** 16 - 1
-
-interface XBoxControllerState {
-  leftThumbHorizontal: number
-  leftThumbVertical: number
-  rightThumbHorizontal: number
-  rightThumbVertical: number
-  leftTriggerRaw: number
-  leftTrigger: number
-  leftTriggerOneQuarter: boolean
-  leftTriggerTwoQuarterPress: boolean
-  leftTriggerThreeQuarterPress: boolean
-  rightTriggerRaw: number
-  rightTrigger: number
-  rightTriggerOneQuarter: boolean
-  rightTriggerTwoQuarterPress: boolean
-  rightTriggerThreeQuarterPress: boolean
-  dUp: boolean
-  dDown: boolean
-  dLeft: boolean
-  dRight: boolean
-  a: boolean
-  b: boolean
-  x: boolean
-  y: boolean
-  leftBumper: boolean
-  rightBumper: boolean
-  hambuger: boolean
-  thumbLeftPressed: boolean
-  thumbRightPressed: boolean
-  windows: boolean
-}
-
-export class XboxOneControllerGeneralDecoderCodec extends Codec {
+export class XboxOneWirelessControllerDecoderCodec extends Codec {
   state: XBoxControllerState = {
     leftThumbHorizontal: 0,
     leftThumbVertical: 0,
     rightThumbHorizontal: 0,
     rightThumbVertical: 0,
-    leftTriggerRaw: 0,
     leftTrigger: 0,
-    leftTriggerOneQuarter: false,
-    leftTriggerTwoQuarterPress: false,
-    leftTriggerThreeQuarterPress: false,
-    rightTriggerRaw: 0,
     rightTrigger: 0,
-    rightTriggerOneQuarter: false,
-    rightTriggerTwoQuarterPress: false,
-    rightTriggerThreeQuarterPress: false,
     dUp: false,
     dDown: false,
     dLeft: false,
@@ -67,6 +24,7 @@ export class XboxOneControllerGeneralDecoderCodec extends Codec {
     thumbLeftPressed: false,
     thumbRightPressed: false,
     windows: false,
+    xbox: false,
   }
 
   filter(message: Message): boolean {
@@ -144,7 +102,6 @@ export class XboxOneControllerGeneralDecoderCodec extends Codec {
     const rightThumbVertical = (data.readUInt16LE(7) / MAX_UINT16) * 2 - 1
 
     // 9
-    const leftTriggerRaw = data[9] / 255
     let leftTrigger = data[9]
 
     // 10
@@ -159,7 +116,6 @@ export class XboxOneControllerGeneralDecoderCodec extends Codec {
     leftTrigger = leftTrigger / 1024
 
     // 11
-    const rightTriggerRaw = data[11] / 255
     let rightTrigger = data[11]
 
     // 12
@@ -208,16 +164,8 @@ export class XboxOneControllerGeneralDecoderCodec extends Codec {
         this.updateState('leftThumbVertical', leftThumbVertical, push), // prettier-ignore
         this.updateState('rightThumbHorizontal', rightThumbHorizontal, push), // prettier-ignore
         this.updateState('rightThumbVertical', rightThumbVertical, push), // prettier-ignore
-        this.updateState('leftTriggerRaw', leftTriggerRaw, push), // prettier-ignore
         this.updateState('leftTrigger', leftTrigger, push), // prettier-ignore
-        this.updateState('leftTriggerOneQuarter', leftTriggerOneQuarter, push), // prettier-ignore
-        this.updateState('leftTriggerTwoQuarterPress', leftTriggerTwoQuarterPress, push), // prettier-ignore
-        this.updateState('leftTriggerThreeQuarterPress', leftTriggerThreeQuarterPress, push), // prettier-ignore
-        this.updateState('rightTriggerRaw', rightTriggerRaw, push), // prettier-ignore
         this.updateState('rightTrigger', rightTrigger, push), // prettier-ignore
-        this.updateState('rightTriggerOneQuarter', rightTriggerOneQuarter, push), // prettier-ignore
-        this.updateState('rightTriggerTwoQuarterPress', rightTriggerTwoQuarterPress, push), // prettier-ignore
-        this.updateState('rightTriggerThreeQuarterPress', rightTriggerThreeQuarterPress, push), // prettier-ignore
         this.updateState('dUp', dUp, push), // prettier-ignore
         this.updateState('dDown', dDown, push), // prettier-ignore
         this.updateState('dLeft', dLeft, push), // prettier-ignore
@@ -237,7 +185,7 @@ export class XboxOneControllerGeneralDecoderCodec extends Codec {
   }
 }
 
-export class XboxOneControllerVibrationCodec extends Codec {
+export class XboxOneWirelessControllerVibrationCodec extends Codec {
   filter(message: Message): boolean {
     // this codec processes outgoing vibration modes
     return message.messageID === 'vibrate'
