@@ -31,7 +31,7 @@ device.on('data', data => {
   const buttonMask1 = data[2]
   const buttonMask2 = data[3]
 
-  console.log(createBinaryString(buttonMask1), createBinaryString(buttonMask2))
+  //console.log(createBinaryString(buttonMask1), createBinaryString(buttonMask2))
 
-  //console.log(data)
+  console.log(data)
 })

@@ -1,6 +1,6 @@
 import { Codec, Message, PushCallback } from '@electricui/core'
 
-import { bitMask, mapRange, MAX_UINT16, XBoxControllerState } from './codec-common'
+import { bitMask, MAX_INT16, XBoxControllerState } from './codec-common'
 
 export class XboxOneWiredControllerDecoderCodec extends Codec {
   state: XBoxControllerState = {
@@ -105,46 +105,22 @@ export class XboxOneWiredControllerDecoderCodec extends Codec {
     // normalize to -1 left to 1 right
 
     // from 00 80 left to ff 7f right
-    const leftThumbHorizontal = mapRange(
-      data.readUInt16LE(6),
-      0x0080,
-      0xff7f,
-      -1,
-      1,
-    )
+    const leftThumbHorizontal = data.readInt16LE(6) / MAX_INT16
 
     // 8
     // 9
     // normalize to -1 top to 1 bottom
-    const leftThumbVertical = mapRange(
-      data.readUInt16LE(8),
-      0x0080,
-      0xff7f,
-      -1,
-      1,
-    )
+    const leftThumbVertical = data.readInt16LE(8) / MAX_INT16
 
     // 10
     // 11
     // normalize to -1 right to 1 right
-    const rightThumbHorizontal = mapRange(
-      data.readUInt16LE(10),
-      0x0080,
-      0xff7f,
-      -1,
-      1,
-    )
+    const rightThumbHorizontal = data.readInt16LE(10) / MAX_INT16
 
     // 12
     // 13
     // normalize to -1 top to 1 bottom
-    const rightThumbVertical = mapRange(
-      data.readUInt16LE(12),
-      0x0080,
-      0xff7f,
-      -1,
-      1,
-    )
+    const rightThumbVertical = data.readInt16LE(12) / MAX_INT16
 
     return Promise.all(
       [

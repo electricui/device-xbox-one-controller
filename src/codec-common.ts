@@ -3,6 +3,7 @@ export function bitMask(byte: number, bitmask: number) {
 }
 
 export const MAX_UINT16 = 2 ** 16 - 1
+export const MAX_INT16 = 2 ** 15 - 1
 
 export interface XBoxControllerState {
   leftThumbHorizontal: number
@@ -26,14 +27,4 @@ export interface XBoxControllerState {
   thumbRightPressed: boolean
   windows: boolean
   xbox: boolean
-}
-
-export function mapRange(
-  value: number,
-  lowFrom: number,
-  highFrom: number,
-  lowTo: number,
-  highTo: number,
-) {
-  return lowTo + ((highTo - lowTo) * (value - lowFrom)) / (highFrom - lowFrom)
 }
