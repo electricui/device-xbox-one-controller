@@ -46,11 +46,7 @@ export class XboxOneWirelessControllerDecoderCodec extends Codec {
     return push(message)
   }
 
-  updateState = (
-    key: keyof XBoxControllerState,
-    val: boolean | number,
-    push: PushCallback,
-  ) => {
+  updateState = (key: string, val: boolean | number, push: PushCallback) => {
     const oldState = this.state[key]
     this.state[key] = val
     if (oldState !== val) {

@@ -5,7 +5,7 @@ export function bitMask(byte: number, bitmask: number) {
 export const MAX_UINT16 = 2 ** 16 - 1
 export const MAX_INT16 = 2 ** 15 - 1
 
-export interface XBoxControllerState {
+export type XBoxControllerState = {
   leftThumbHorizontal: number
   leftThumbVertical: number
   rightThumbHorizontal: number
@@ -27,4 +27,7 @@ export interface XBoxControllerState {
   thumbRightPressed: boolean
   windows: boolean
   xbox: boolean
+
+  // index type
+  [key: string]: number | boolean
 }
