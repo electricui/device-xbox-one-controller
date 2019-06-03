@@ -1,6 +1,6 @@
 {
   "name": "@electricui/device-xbox-one-controller",
-  "version": "0.5.6-prerelease.17",
+  "version": "0.5.6-prerelease.21",
   "description": "ElectricUI Xbox One Device for Desktop",
   "electricui-dev": true,
   "author": "Electric UI <support@electricui.com> (https://electricui.com)",
@@ -13,8 +13,8 @@
     "manifest.json"
   ],
   "dependencies": {
-    "@electricui/core": "^0.5.6-prerelease.17",
-    "@electricui/transport-node-hid": "^0.5.6-prerelease.17",
+    "@electricui/core": "^0.5.6-prerelease.21",
+    "@electricui/transport-node-hid": "^0.5.6-prerelease.21",
     "bluebird": "^3.5.3",
     "debug": "^4.1.1"
   },
