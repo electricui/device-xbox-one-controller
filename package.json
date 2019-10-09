@@ -33,7 +33,7 @@
     "mochawesome": "^3.1.1",
     "node-hid": "^0.7.7",
     "nyc": "^13.3.0",
-    "rollup": "^1.17.0",
+    "rollup": "^1.23.1",
     "rollup-plugin-auto-external": "^2.0.0",
     "rollup-plugin-typescript2": "^0.22.0",
     "sinon": "^7.2.3",
