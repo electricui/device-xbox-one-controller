@@ -24,7 +24,6 @@
     "@types/debug": "^4.1.1",
     "@types/deepmerge": "^2.2.0",
     "@types/mocha": "^5.2.6",
-    "@types/node": "^11.9.4",
     "@types/node-hid": "^0.7.0",
     "@types/sinon": "^7.0.6",
     "chai": "^4.2.0",
@@ -33,15 +32,13 @@
     "mochawesome": "^3.1.1",
     "node-hid": "^0.7.9",
     "nyc": "^13.3.0",
-    "rollup": "^1.27.5",
-    "rollup-plugin-auto-external": "^2.0.0",
-    "rollup-plugin-copy": "^3.3.0",
-    "rollup-plugin-license": "^0.13.0",
-    "rollup-plugin-typescript2": "^0.25.3",
     "sinon": "^7.2.3",
     "ts-node": "^8.5.4",
     "tslib": "^1.10.0",
-    "typescript": "^3.7.2"
+    "@types/node": "^12.12.27",
+    "typescript": "^3.7.5",
+    "rollup": "^1.31.1",
+    "@electricui/build-rollup-config": "^0.6.15-prerelease.0"
   },
   "scripts": {
     "prepack": "silversmith prepack",
