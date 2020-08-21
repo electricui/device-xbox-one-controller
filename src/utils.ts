@@ -1,6 +1,8 @@
-import { HintIdentification } from '@electricui/core'
+import { HintIdentificationDefault } from '@electricui/core'
 
-export function isWirelessXBoxController(identification: HintIdentification) {
+export function isWirelessXBoxController(
+  identification: HintIdentificationDefault,
+) {
   return (
     identification.vendorId === 1118 &&
     identification.productId === 765 &&
@@ -8,7 +10,9 @@ export function isWirelessXBoxController(identification: HintIdentification) {
   )
 }
 
-export function isWiredXBoxController(identification: HintIdentification) {
+export function isWiredXBoxController(
+  identification: HintIdentificationDefault,
+) {
   return (
     identification.vendorId === 1118 &&
     identification.productId === 746 &&
