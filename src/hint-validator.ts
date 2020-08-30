@@ -1,5 +1,4 @@
 import { DeviceCandidate, DiscoveryHintValidator, Hint } from '@electricui/core'
-
 import { isWiredXBoxController, isWirelessXBoxController } from './utils'
 
 /*
@@ -64,7 +63,7 @@ export default class HintValidatorXboxController extends DiscoveryHintValidator 
       type: deviceType,
     })
 
-    this.pushDeviceCandidate(candidate)
+    this.pushDeviceCandidate(candidate, this.cancellationToken)
 
     this.complete()
   }
