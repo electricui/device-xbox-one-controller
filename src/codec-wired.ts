@@ -1,6 +1,5 @@
-import { Codec, Message, PushCallback } from '@electricui/core'
-
-import { bitMask, MAX_INT16, XBoxControllerState } from './codec-common'
+import { Codec, Message } from '@electricui/core'
+import { MAX_INT16, XBoxControllerState, bitMask } from './codec-common'
 
 export class XboxOneWiredControllerDecoderCodec extends Codec {
   state: XBoxControllerState = {
@@ -34,31 +33,14 @@ export class XboxOneWiredControllerDecoderCodec extends Codec {
     }
 
     // this codec processes all incoming event packets that start with 0x0014
-    return (
-      message.messageID === 'event' &&
-      message.payload[0] === 0x00 &&
-      message.payload[1] === 0x14
-    )
+    return message.messageID === 'event' && message.payload[0] === 0x00 && message.payload[1] === 0x14
   }
 
-  encode(message: Message, push: PushCallback) {
-    return push(message)
+  encode(payload: never) {
+    return payload
   }
 
-  updateState = (key: string, val: boolean | number, push: PushCallback) => {
-    const oldState = this.state[key]
-    this.state[key] = val
-    if (oldState !== val) {
-      const message = new Message(key, val)
-      return push(message)
-    }
-
-    return null
-  }
-
-  decode(message: Message, push: PushCallback) {
-    const data = message.payload
-
+  decode(data: Buffer) {
     // 00 14 00 00 ff 00 13 01 29 01 ea 02 55 06
 
     // [---] mask to say its a regular packet
@@ -118,30 +100,28 @@ export class XboxOneWiredControllerDecoderCodec extends Codec {
     // normalize to -1 top to 1 bottom
     const rightThumbVertical = data.readInt16LE(12) / MAX_INT16
 
-    return Promise.all(
-      [
-        this.updateState('leftThumbHorizontal', leftThumbHorizontal, push), // prettier-ignore
-        this.updateState('leftThumbVertical', leftThumbVertical, push), // prettier-ignore
-        this.updateState('rightThumbHorizontal', rightThumbHorizontal, push), // prettier-ignore
-        this.updateState('rightThumbVertical', rightThumbVertical, push), // prettier-ignore
-        this.updateState('leftTrigger', leftTrigger, push), // prettier-ignore
-        this.updateState('rightTrigger', rightTrigger, push), // prettier-ignore
-        this.updateState('dUp', dUp, push), // prettier-ignore
-        this.updateState('dDown', dDown, push), // prettier-ignore
-        this.updateState('dLeft', dLeft, push), // prettier-ignore
-        this.updateState('dRight', dRight, push), // prettier-ignore
-        this.updateState('a', a, push), // prettier-ignore
-        this.updateState('b', b, push), // prettier-ignore
-        this.updateState('x', x, push), // prettier-ignore
-        this.updateState('y', y, push), // prettier-ignore
-        this.updateState('leftBumper', leftBumper, push), // prettier-ignore
-        this.updateState('rightBumper', rightBumper, push), // prettier-ignore
-        this.updateState('hambuger', hambuger, push), // prettier-ignore
-        this.updateState('thumbLeftPressed', thumbLeftPressed, push), // prettier-ignore
-        this.updateState('thumbRightPressed', thumbRightPressed, push), // prettier-ignore
-        this.updateState('windows', windows, push), // prettier-ignore
-        this.updateState('xbox', xbox, push), // prettier-ignore
-      ].filter(promise => promise !== null),
-    )
+    return {
+      leftThumbHorizontal,
+      leftThumbVertical,
+      rightThumbHorizontal,
+      rightThumbVertical,
+      leftTrigger,
+      rightTrigger,
+      dUp,
+      dDown,
+      dLeft,
+      dRight,
+      a,
+      b,
+      x,
+      y,
+      leftBumper,
+      rightBumper,
+      hambuger,
+      thumbLeftPressed,
+      thumbRightPressed,
+      windows,
+      xbox,
+    }
   }
 }

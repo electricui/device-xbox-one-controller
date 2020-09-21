@@ -1,6 +1,5 @@
 import { Codec, Message, PushCallback } from '@electricui/core'
-
-import { bitMask, MAX_UINT16, XBoxControllerState } from './codec-common'
+import { MAX_UINT16, XBoxControllerState, bitMask } from './codec-common'
 
 export class XboxOneWirelessControllerDecoderCodec extends Codec {
   state: XBoxControllerState = {
@@ -42,24 +41,11 @@ export class XboxOneWirelessControllerDecoderCodec extends Codec {
     return message.messageID === 'event' && message.payload[0] === 0x01
   }
 
-  encode(message: Message, push: PushCallback) {
-    return push(message)
+  encode(payload: never) {
+    return payload
   }
 
-  updateState = (key: string, val: boolean | number, push: PushCallback) => {
-    const oldState = this.state[key]
-    this.state[key] = val
-    if (oldState !== val) {
-      const message = new Message(key, val)
-      return push(message)
-    }
-
-    return null
-  }
-
-  decode(message: Message, push: PushCallback) {
-    const data = message.payload
-
+  decode(data: Buffer) {
     // if this is an xbox button press
     if (data[0] === 0x02) {
       // these events always come in on their own, so we can just bail early
@@ -70,9 +56,7 @@ export class XboxOneWirelessControllerDecoderCodec extends Codec {
     }
 
     if (data[0] !== 0x01) {
-      console.log(
-        "An xbox packet came over the line that we don't understand yet, probably the heartbeat thing?",
-      )
+      console.log("An xbox packet came over the line that we don't understand yet, probably the heartbeat thing?")
       console.log(data)
       return Promise.resolve()
     }
@@ -129,14 +113,10 @@ export class XboxOneWirelessControllerDecoderCodec extends Codec {
     //  d is a clock like count using the last 4 bits of byte 13,
     //  1 represents 'up', 2 represents 'up+right', 3 represents 'right', etc.
     const dPad = data[13] & 0b00001111
-    const dUp =
-      dPad === 0b00000001 || dPad === 0b00000010 || dPad === 0b00001000
-    const dDown =
-      dPad === 0b00000101 || dPad === 0b00000100 || dPad === 0b00000110
-    const dLeft =
-      dPad === 0b00000111 || dPad === 0b00000110 || dPad === 0b00001000
-    const dRight =
-      dPad === 0b00000011 || dPad === 0b00000100 || dPad === 0b00000010
+    const dUp = dPad === 0b00000001 || dPad === 0b00000010 || dPad === 0b00001000
+    const dDown = dPad === 0b00000101 || dPad === 0b00000100 || dPad === 0b00000110
+    const dLeft = dPad === 0b00000111 || dPad === 0b00000110 || dPad === 0b00001000
+    const dRight = dPad === 0b00000011 || dPad === 0b00000100 || dPad === 0b00000010
 
     // 14
     const a = bitMask(data[14], 0b00000001)
@@ -154,42 +134,49 @@ export class XboxOneWirelessControllerDecoderCodec extends Codec {
     // 16
     const windows = bitMask(data[16], 0b00000001)
 
-    return Promise.all(
-      [
-        this.updateState('leftThumbHorizontal', leftThumbHorizontal, push), // prettier-ignore
-        this.updateState('leftThumbVertical', leftThumbVertical, push), // prettier-ignore
-        this.updateState('rightThumbHorizontal', rightThumbHorizontal, push), // prettier-ignore
-        this.updateState('rightThumbVertical', rightThumbVertical, push), // prettier-ignore
-        this.updateState('leftTrigger', leftTrigger, push), // prettier-ignore
-        this.updateState('rightTrigger', rightTrigger, push), // prettier-ignore
-        this.updateState('dUp', dUp, push), // prettier-ignore
-        this.updateState('dDown', dDown, push), // prettier-ignore
-        this.updateState('dLeft', dLeft, push), // prettier-ignore
-        this.updateState('dRight', dRight, push), // prettier-ignore
-        this.updateState('a', a, push), // prettier-ignore
-        this.updateState('b', b, push), // prettier-ignore
-        this.updateState('x', x, push), // prettier-ignore
-        this.updateState('y', y, push), // prettier-ignore
-        this.updateState('leftBumper', leftBumper, push), // prettier-ignore
-        this.updateState('rightBumper', rightBumper, push), // prettier-ignore
-        this.updateState('hambuger', hambuger, push), // prettier-ignore
-        this.updateState('thumbLeftPressed', thumbLeftPressed, push), // prettier-ignore
-        this.updateState('thumbRightPressed', thumbRightPressed, push), // prettier-ignore
-        this.updateState('windows', windows, push), // prettier-ignore
-      ].filter(promise => promise !== null),
-    )
+    return {
+      leftThumbHorizontal,
+      leftThumbVertical,
+      rightThumbHorizontal,
+      rightThumbVertical,
+      leftTrigger,
+      rightTrigger,
+      dUp,
+      dDown,
+      dLeft,
+      dRight,
+      a,
+      b,
+      x,
+      y,
+      leftBumper,
+      rightBumper,
+      hambuger,
+      thumbLeftPressed,
+      thumbRightPressed,
+      windows,
+    }
   }
 }
 
-export class XboxOneWirelessControllerVibrationCodec extends Codec {
+export interface XboxOneWirelessControllerVibrationCommand {
+  ltMagnitude: number
+  rtMagnitude: number
+  leftMagnitude: number
+  rightMagnitude: number
+  duration: number
+  startDelay: number
+  loopCount: number
+}
+
+export class XboxOneWirelessControllerVibrationCodec extends Codec<never, number[]> {
   filter(message: Message): boolean {
     // this codec processes outgoing vibration modes
     return message.messageID === 'vibrate'
   }
 
-  encode(message: Message, push: PushCallback) {
-    const payload = message.payload
-    message.payload = [
+  encode(payload: XboxOneWirelessControllerVibrationCommand) {
+    return [
       0x03, // reportID
       0xff, // activationMask
       (payload.ltMagnitude / 1) * 0x65, // ltMagnitude: 0 - 1
@@ -200,11 +187,9 @@ export class XboxOneWirelessControllerVibrationCodec extends Codec {
       payload.startDelay, // startDelay: 0 - 255
       payload.loopCount, // loopCount: 0 - 255
     ]
-
-    return push(message)
   }
 
-  decode(message: Message, push: PushCallback) {
-    return push(message)
+  decode(payload: never) {
+    return payload
   }
 }
