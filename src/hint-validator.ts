@@ -44,15 +44,12 @@ export default class HintValidatorXboxController extends DiscoveryHintValidator 
       const identification = hint.getIdentification()
 
       // Since we can do this synchronously, we may as well just do it here once.
-      return (
-        isWirelessXBoxController(identification) ||
-        isWiredXBoxController(identification)
-      )
+      return isWirelessXBoxController(identification) || isWiredXBoxController(identification)
     }
     return false
   }
 
-  startValidation() {
+  async startValidation() {
     const identification = this.hint.getIdentification()
 
     const boardID = `xbox-one-controller-${identification.serialNumber}`
